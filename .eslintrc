@@ -1,0 +1,133 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "react-native/react-native": true
+  },
+  "extends": [
+    "airbnb",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "prettier",
+    "prettier/react",
+    "@react-native-community"
+    // "plugin:react-native/all"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react",
+    "react-hooks",
+    "react-native",
+    "prettier",
+    "jsx-a11y",
+    "import",
+    "eslint-plugin-prettier",
+    "eslint-plugin-react"
+  ],
+  "rules": {
+    "prettier/prettier": 2,
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx"]
+      }
+    ],
+    // "react-native/sort-styles": [2, "asc", { "ignoreClassNames": true, "ignoreStyleProperties": false }],
+    "react-native/split-platform-components": 2,
+    "react/no-did-mount-set-state": 2,
+    "react/no-did-update-set-state": 2,
+    "react/no-direct-mutation-state": 2,
+    "react/jsx-props-no-spreading": 1,
+    "react/jsx-uses-vars": 2,
+    "react/require-default-props": 1,
+    "react/self-closing-comp": 2,
+    "react/jsx-indent": [0],
+    "react/sort-comp": [0],
+    "react/destructuring-assignment": [0],
+    "react/forbid-prop-types": [0],
+    "react/prefer-stateless-function": 1,
+    "react-native/no-unused-styles": 0,
+    "react/no-multi-comp": 0,
+    "react/jsx-no-bind": 2,
+    "react/jsx-no-duplicate-props": 2,
+    "react/prop-types": 1,
+    "react/no-unescaped-entities": [
+      "error",
+      {
+        "forbid": [">", "}"]
+      }
+    ],
+    "import/no-unresolved": 1,
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true
+      }
+    ],
+    "import/prefer-default-export": 1,
+    "no-unused-vars": [
+      "warn",
+      {
+        "varsIgnorePattern": "React"
+      }
+    ],
+    "global-require": 0,
+    "no-undef": 2,
+    "semi": 2,
+    "space-before-blocks": 2,
+    "space-before-function-paren": 0,
+    "space-in-parens": 2,
+    "space-infix-ops": 2,
+    "space-unary-ops": 2,
+    "spaced-comment": 2,
+    "rest-spread-spacing": 2,
+    "semi-spacing": 2,
+    "no-unneeded-ternary": 2,
+    "eqeqeq": 2,
+    "dot-location": 2,
+    "no-extra-bind": 2,
+    "keyword-spacing": 2,
+    "key-spacing": 2,
+    // "indent": ["error", 2],
+    "func-call-spacing": 2,
+    "array-bracket-spacing": 2,
+    "block-spacing": 2,
+    "brace-style": 2,
+    "arrow-body-style": 2,
+    "arrow-parens": 2,
+    "arrow-spacing": 2,
+    "quotes": [
+      "error",
+      "double",
+      {
+        "avoidEscape": true,
+        "allowTemplateLiterals": false
+      }
+    ],
+    "jsx-quotes": ["error", "prefer-double"],
+    "camelcase": 1,
+    "no-console": 2,
+    "comma-dangle": 0,
+    "no-use-before-define": 0,
+    "quote-props": 1,
+    "padded-blocks": 0,
+    "no-shadow": 1,
+    "no-return-assign": 1,
+    "no-case-declarations": 1,
+    "no-underscore-dangle": 0,
+    "no-param-reassign": 0,
+    "consistent-return": 1,
+    "no-confusing-arrow": 0
+  }
+}
