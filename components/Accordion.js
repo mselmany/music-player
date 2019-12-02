@@ -52,13 +52,7 @@ Accordion.Header.propTypes = {
   children: PropTypes.node.isRequired
 };
 
-Accordion.Body = memo(({ children, visible }) =>
-  visible ? (
-    <AccordionBody>
-      <AccordionBodyText>{children}</AccordionBodyText>
-    </AccordionBody>
-  ) : null
-);
+Accordion.Body = memo(({ children, visible }) => (visible ? <AccordionBody>{children}</AccordionBody> : null));
 
 Accordion.Body.propTypes = {
   visible: PropTypes.bool.isRequired,
@@ -80,4 +74,3 @@ const AccordionHeaderText = styled.Text`
 `;
 
 const AccordionBody = styled.View``;
-const AccordionBodyText = styled.Text``;

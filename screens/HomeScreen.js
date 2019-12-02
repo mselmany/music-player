@@ -1,51 +1,60 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styled from "@emotion/native";
+import * as MediaLibrary from "expo-media-library";
+import MediaMeta from "react-native-media-meta";
 
-import { useStore } from "../Providers/StoreProvider";
-
-import SprintButton from "../components/SprintButton";
-import FilterButton from "../components/FilterButton";
-import Accordion from "../components/Accordion";
-import SearchBar from "../components/SearchBar";
+const { MediaType, SortBy } = MediaLibrary;
 
 export default function HomeScreen() {
-  const { pending, filters, sprints, selecteds, selectFilter, selectSprint } = useStore();
+  const [granted, setGranted] = useState(false);
+  const [assets, setAssets] = useState([]);
+
+  useEffect(() => {
+    grantPermission();
+    (async () => {
+      const { assets: _assets } = await MediaLibrary.getAssetsAsync({
+        first: 100,
+        mediaType: [MediaType.audio],
+        sortBy: [[SortBy.modificationTime, false]]
+      });
+      setAssets(_assets);
+
+      MediaMeta.get(_assets[0].uri)
+        .then((metadata) => console.log(metadata))
+        .catch((err) => console.error(err));
+
+      // console.log(JSON.stringify(_assets, null, 3));
+    })();
+  }, [grantPermission]);
+
+  const grantPermission = useCallback(async () => {
+    setGranted(await requestMediaLibraryPermissions());
+  }, []);
+
+  async function requestMediaLibraryPermissions() {
+    const { status } = await MediaLibrary.requestPermissionsAsync();
+    const isGranted = status === "granted";
+    if (!isGranted) {
+      alert("Bu uygulamanın Medya Kütüphanesi'ne erişime ihtiyacı var. Aksi taktirde uygulama kullanılamaz!");
+    }
+    return isGranted;
+  }
 
   return (
     <MainContainer>
-      <Header>{pending ? "Yükleniyor..." : "Jira Report"}</Header>
-      {!pending ? (
-        <Container>
-          <Accordion header="Filtreler">
-            <FilterContainer horizontal showsHorizontalScrollIndicator={false}>
-              {filters.map((tag, index) => (
-                <FilterButton
-                  tag={tag}
-                  index={index}
-                  selected={selecteds.filter === tag}
-                  key={tag}
-                  onPress={selectFilter}
-                />
-              ))}
-            </FilterContainer>
-          </Accordion>
-
-          <Accordion header="Sprintler">
-            <SprintsContainer horizontal showsHorizontalScrollIndicator={false}>
-              {sprints
-                .filter((s) => (selecteds.filter ? s.__computed.filterTag === selecteds.filter : true))
-                .map((value, index) => (
-                  <SprintButton
-                    value={value}
-                    index={index}
-                    selected={selecteds.sprint === value.id}
-                    key={value.id}
-                    onPress={selectSprint}
-                  />
-                ))}
-            </SprintsContainer>
-          </Accordion>
-        </Container>
+      <ScrollViewContainer>
+        {assets.map((item, index) => 
+          // console.log(item);
+           (
+            // <Header key={index}>{JSON.stringify(item, null, 3)}</Header>
+            <Header key={index}>{`${item.filename} `}</Header>
+          )
+        )}
+      </ScrollViewContainer>
+      {!granted ? (
+        <Button onPress={grantPermission}>
+          <ButtonText>İzin iste</ButtonText>
+        </Button>
       ) : null}
     </MainContainer>
   );
@@ -64,7 +73,7 @@ const MainContainer = styled.View`
 
 const Header = styled.Text`
   margin: 40px 0 0 40px;
-  font-size: 25px;
+  font-size: 20px;
   font-family: "Rubik-Light";
 `;
 
@@ -74,16 +83,13 @@ const Container = styled.View`
   margin: 20px 0;
 `;
 
-const ScrollViewContainer = styled.ScrollView`
+const ScrollViewContainer = styled.ScrollView``;
+
+const Button = styled.TouchableOpacity`
+  background-color: #f0f0f0;
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  flex-direction: column;
+  padding: 10px;
 `;
 
-const FilterContainer = styled(ScrollViewContainer)`
-  padding: 10px 0;
-`;
-
-const SprintsContainer = styled(ScrollViewContainer)`
-  padding: 10px 0;
-`;
+const ButtonText = styled.Text``;
