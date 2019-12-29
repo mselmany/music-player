@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 49232,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "packagerPid": 53300,
+  "expoServerNgrokUrl": "https://yv-m7a.mselmany.music-player.exp.direct",
+  "packagerNgrokUrl": "https://packager.yv-m7a.mselmany.music-player.exp.direct",
+  "ngrokPid": 53313,
   "webpackServerPort": 19006
 }
