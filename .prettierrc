@@ -1,8 +1,7 @@
 {
   "bracketSpacing": true,
   "jsxBracketSameLine": true,
-  "semi": true,
   "printWidth": 120,
-  "arrowParens": "always",
-  "endOfLine": "auto"
+  "arrowParens": "avoid",
+  "tabWidth": 2
 }

@@ -1,59 +1,57 @@
 import React, { useEffect, useState, useCallback } from "react";
 import styled from "@emotion/native";
 import * as MediaLibrary from "expo-media-library";
-import MediaMeta from "react-native-media-meta";
 
 const { MediaType, SortBy } = MediaLibrary;
 
 export default function HomeScreen() {
-  const [granted, setGranted] = useState(false);
+  const [granted, setGranted] = useState(null);
   const [assets, setAssets] = useState([]);
 
   useEffect(() => {
-    grantPermission();
     (async () => {
-      const { assets: _assets } = await MediaLibrary.getAssetsAsync({
-        first: 100,
-        mediaType: [MediaType.audio],
-        sortBy: [[SortBy.modificationTime, false]]
-      });
-      setAssets(_assets);
-
-      MediaMeta.get(_assets[0].uri)
-        .then((metadata) => console.log(metadata))
-        .catch((err) => console.error(err));
-
-      // console.log(JSON.stringify(_assets, null, 3));
+      if (await grantPermission()) {
+        const { assets: _assets } = await MediaLibrary.getAssetsAsync({
+          first: 100,
+          mediaType: [MediaType.audio],
+          sortBy: [[SortBy.modificationTime, false]]
+        });
+        setAssets(_assets);
+      }
     })();
   }, [grantPermission]);
 
   const grantPermission = useCallback(async () => {
-    setGranted(await requestMediaLibraryPermissions());
+    const isGranted = await requestMediaLibraryPermissions();
+    setGranted(isGranted);
+    return isGranted;
   }, []);
 
   async function requestMediaLibraryPermissions() {
-    const { status } = await MediaLibrary.requestPermissionsAsync();
-    const isGranted = status === "granted";
-    if (!isGranted) {
-      alert("Bu uygulamanın Medya Kütüphanesi'ne erişime ihtiyacı var. Aksi taktirde uygulama kullanılamaz!");
+    try {
+      const { status } = await MediaLibrary.requestPermissionsAsync();
+      return status === "granted";
+    } catch (e) {
+      console.log(e);
+      return null;
     }
-    return isGranted;
   }
 
   return (
     <MainContainer>
       <ScrollViewContainer>
-        {assets.map((item, index) => 
+        {assets.map((item, index) => (
           // console.log(item);
-           (
-            // <Header key={index}>{JSON.stringify(item, null, 3)}</Header>
-            <Header key={index}>{`${item.filename} `}</Header>
-          )
-        )}
+          // <Header key={index}>{JSON.stringify(item, null, 3)}</Header>
+          <Header key={index}>{`${item.filename} `}</Header>
+        ))}
       </ScrollViewContainer>
       {!granted ? (
         <Button onPress={grantPermission}>
           <ButtonText>İzin iste</ButtonText>
+          <ButtonText>
+            Bu uygulamanın Medya Kütüphanesi'ne erişime ihtiyacı var. Aksi taktirde uygulama kullanılamaz!
+          </ButtonText>
         </Button>
       ) : null}
     </MainContainer>
