@@ -43,7 +43,7 @@ export default function HomeScreen() {
         {assets.map((item, index) => (
           // console.log(item);
           // <Header key={index}>{JSON.stringify(item, null, 3)}</Header>
-          <Header key={index}>{`${item.filename} `}</Header>
+          <Header key={index}>{`${item.filename}`}</Header>
         ))}
       </ScrollViewContainer>
       {!granted ? (
